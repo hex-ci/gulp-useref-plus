@@ -1,7 +1,7 @@
 'use strict';
 var gutil = require('gulp-util'),
     through = require('through2'),
-    useref = require('useref');
+    useref = require('useref'),
     crypto = require('crypto');
 
 module.exports = function (options) {

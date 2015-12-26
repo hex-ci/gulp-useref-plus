@@ -1,6 +1,6 @@
 {
-  "name": "gulp-useref",
-  "version": "3.0.4",
+  "name": "gulp-useref-plus",
+  "version": "0.0.1",
   "description": "Parse build blocks in HTML files to replace references to non-optimized scripts or stylesheets.",
   "main": "index.js",
   "directories": {
@@ -40,7 +40,7 @@
   "files": [
     "index.js"
   ],
-  "repository": "jonkemp/gulp-useref",
+  "repository": "hex-ci/gulp-useref-plus",
   "keywords": [
     "gulpplugin",
     "html",
@@ -49,6 +49,6 @@
     "optimize",
     "concat"
   ],
-  "author": "Jonathan Kemp <kempdogg@gmail.com> (http://jonkemp.com/)",
+  "author": "Hex",
   "license": "MIT"
 }

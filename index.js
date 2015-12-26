@@ -211,8 +211,8 @@ module.exports = function (options) {
                         src = src.pipe(fn(name));
                     });
 
-                    if (opts.autoFilename) {
-                        name = name + getShortString(filepaths.join(',')) + '.' + type;
+                    if (/\/$/.test(name)) {
+                        name = name + (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(filepaths.join(',')) + '.' + type;
                     }
 
                     // Add assets to the stream

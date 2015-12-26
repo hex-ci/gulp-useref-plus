@@ -2,6 +2,7 @@
 var gutil = require('gulp-util'),
     through = require('through2'),
     useref = require('useref');
+    crypto = require('crypto');
 
 module.exports = function (options) {
     var opts = options || {},
@@ -18,6 +19,38 @@ module.exports = function (options) {
         end = false,
         additionalFiles = [],
         waitForAssets;
+
+    var getShortString = function(input) {
+        var base32 = [
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+            'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+            'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+            'y', 'z', '0', '1', '2', '3', '4', '5'
+        ];
+
+        var subHex, int, out, val;
+
+        var hex = crypto.createHash('md5').update(input).digest('hex');
+        var hexLen = hex.length;
+        var subHexLen = hexLen / 8;
+        var output = [];
+
+        for (var i = 0; i < subHexLen; ++i) {
+            subHex = hex.substr(i * 8, 8);
+            int = 0x3FFFFFFF & (1 * ('0x' + subHex));
+            out = '';
+
+            for (var j = 0; j < 8; ++j) {
+                val = 0x0000001F & int;
+                out += base32[val];
+                int = int >> 5;
+            }
+
+            output.push(out);
+        }
+
+        return output[0];
+    };
 
     // If any external streams were included, add matched files to src
     if (opts.additionalStreams) {
@@ -177,6 +210,10 @@ module.exports = function (options) {
                     transforms.forEach(function (fn) {
                         src = src.pipe(fn(name));
                     });
+
+                    if (opts.autoFilename) {
+                        name = name + getShortString(filepaths.join(',')) + '.' + type;
+                    }
 
                     // Add assets to the stream
                     // If noconcat option is false, concat the files first.

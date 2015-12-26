@@ -142,7 +142,7 @@ module.exports = function (options) {
             }
 
             if (file.isStream()) {
-                cb(new gutil.PluginError('gulp-useref', 'Streaming not supported'));
+                cb(new gutil.PluginError('gulp-useref-plus', 'Streaming not supported'));
                 return;
             }
 
@@ -153,7 +153,7 @@ module.exports = function (options) {
                 file.contents = new Buffer(html);
                 self.push(file);
             } catch (err) {
-                self.emit('error', new gutil.PluginError('gulp-useref', err));
+                self.emit('error', new gutil.PluginError('gulp-useref-plus', err));
             }
 
             if (opts.noAssets) {

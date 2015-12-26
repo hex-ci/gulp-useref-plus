@@ -1,32 +1,11 @@
-# [gulp](https://github.com/gulpjs/gulp)-useref [![Build Status](https://travis-ci.org/jonkemp/gulp-useref.svg?branch=master)](https://travis-ci.org/jonkemp/gulp-useref) [![Coverage Status](https://coveralls.io/repos/jonkemp/gulp-useref/badge.svg?branch=master&service=github)](https://coveralls.io/github/jonkemp/gulp-useref?branch=master)
-
-[![NPM](https://nodei.co/npm/gulp-useref.png?downloads=true)](https://nodei.co/npm/gulp-useref/)
-
-> Parse build blocks in HTML files to replace references to non-optimized scripts or stylesheets with [useref](https://github.com/jonkemp/useref)
-
-Inspired by the grunt plugin [grunt-useref](https://github.com/pajtai/grunt-useref). It can handle file concatenation but not minification. Files are then passed down the stream. For minification of assets or other modifications, use [gulp-if](https://github.com/robrich/gulp-if) to conditionally handle specific types of assets.
-
-
-## What's new in 3.0?
-
-Changes under the hood have made the code more efficient and simplified the API. Since the API has changed, please observe the usage examples below.
-
-If you get errors like
-
-    TypeError: useref.assets is not a function
-
-or
-
-    TypeError: $.useref.assets is not a function
-
-please read the Migration Notes below.
+# gulp-useref-plus
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-useref)
+Install with [npm](https://npmjs.org/package/gulp-useref-plus)
 
 ```
-npm install --save-dev gulp-useref
+npm install --save-dev gulp-useref-plus
 ```
 
 
@@ -36,7 +15,7 @@ The following example will parse the build blocks in the HTML, replace them and 
 
 ```js
 var gulp = require('gulp'),
-    useref = require('gulp-useref');
+    useref = require('gulp-useref-plus');
 
 gulp.task('default', function () {
     return gulp.src('app/*.html')
@@ -49,7 +28,7 @@ With options:
 
 ```js
 var gulp = require('gulp'),
-    useref = require('gulp-useref');
+    useref = require('gulp-useref-plus');
 
 gulp.task('default', function () {
     return gulp.src('app/*.html')
@@ -62,7 +41,7 @@ If you want to minify your assets or perform some other modification, you can us
 
 ```js
 var gulp = require('gulp'),
-    useref = require('gulp-useref'),
+    useref = require('gulp-useref-plus'),
     gulpif = require('gulp-if'),
     uglify = require('gulp-uglify'),
     minifyCss = require('gulp-minify-css');
@@ -139,7 +118,7 @@ Transform assets before concat. For example, to integrate source maps:
 ```js
 var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
-    useref = require('gulp-useref'),
+    useref = require('gulp-useref-plus'),
     lazypipe = require('lazypipe');
 
 gulp.task('default', function () {
@@ -185,7 +164,7 @@ Skip concatenation and add all assets to the stream instead.
 Type: `Array<Stream>`  
 Default: `none`
 
-Use additional streams as sources of assets. Useful for combining gulp-useref with preprocessing tools. For example, to use with TypeScript:
+Use additional streams as sources of assets. Useful for combining gulp-useref-plus with preprocessing tools. For example, to use with TypeScript:
 
 ```javascript
 var ts = require('gulp-typescript');
@@ -195,7 +174,7 @@ var tsStream = gulp.src('src/**/*.ts')
         .pipe(ts());
 
 gulp.task('default', function () {
-    // use gulp-useref normally
+    // use gulp-useref-plus normally
     return gulp.src('src/index.html')
         .pipe(useref({ additionalStreams: [tsStream] }))
         .pipe(gulp.dest('dist'));
@@ -211,7 +190,7 @@ Add a transformPath function in case the path needs to be modified before search
 
 ```js
 var gulp = require('gulp'),
-    useref = require('gulp-useref');
+    useref = require('gulp-useref-plus');
 
 gulp.task('default', function () {
     return gulp.src('app/*.html')
@@ -226,7 +205,7 @@ gulp.task('default', function () {
 
 ## Migration from v2 API
 
-If you upgrade gulp-useref from v2 without changing your gulpfile,
+If you upgrade gulp-useref-plus from v2 without changing your gulpfile,
 you will get errors like this:
 
     TypeError: $.useref.assets is not a function
@@ -238,7 +217,7 @@ or
 For a simple configuration, you can replace this V2 code:
 
     var gulp = require('gulp'),
-        useref = require('gulp-useref');
+        useref = require('gulp-useref-plus');
 
     gulp.task('default', function () {
       var assets = useref.assets();
@@ -253,7 +232,7 @@ For a simple configuration, you can replace this V2 code:
 with this V3 code:
 
     var gulp = require('gulp'),
-      useref = require('gulp-useref');
+      useref = require('gulp-useref-plus');
 
     gulp.task('default', function () {
       return gulp.src('app/*.html')
@@ -268,20 +247,10 @@ may not allow for its previous usage.
 If the gulpfile you are using came from a generator, (for example,
 in JohnPapa's excellent "opinionated" HotTowel generator), it may
 be more practical to go back to that generator project to see
-whether they have upgraded to the V3 gulp-useref API, rather than
+whether they have upgraded to the V3 gulp-useref-plus API, rather than
 trying to understand their pipe.
 
 
 ## Notes
 
 * [ClosureCompiler.js](https://github.com/dcodeIO/ClosureCompiler.js) doesn't support Buffers, which means if you want to use [gulp-closure-compiler](https://github.com/sindresorhus/gulp-closure-compiler) you'll have to first write out the `combined.js` to disk. See [this](https://github.com/dcodeIO/ClosureCompiler.js/issues/11) for more information.
-
-
-## Contributing
-
-See the [CONTRIBUTING Guidelines](https://github.com/jonkemp/gulp-useref/blob/master/CONTRIBUTING.md)
-
-
-## License
-
-MIT © [Jonathan Kemp](http://jonkemp.com)

@@ -32,11 +32,15 @@ module.exports = function (options) {
       }
 
       if (name.length) {
+        name = name.sort();
+        if (opts.debug) {
+          ref = '\n<!-- files:\n' + name.join('\n') + '\n-->\n';
+        }
         var newfilename = (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(name.join(',')) + '.js';
         if (attbs) {
-          ref = '<script src="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '" ' + attbs + '></script>';
+          ref += '<script src="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '" ' + attbs + '></script>';
         } else {
-          ref = '<script src="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '"></script>';
+          ref += '<script src="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '"></script>';
         }
       }
 
@@ -56,11 +60,15 @@ module.exports = function (options) {
 
       // Check to see if there are any css references at all.
       if (name.length) {
-          var newfilename = (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(name.join(',')) + '.css';
+        name = name.sort();
+        if (opts.debug) {
+          ref = '\n<!-- files:\n' + name.join('\n') + '\n-->\n';
+        }
+        var newfilename = (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(name.join(',')) + '.css';
         if (attbs) {
-          ref = '<link rel="stylesheet" href="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '" ' + attbs + '>';
+          ref += '<link rel="stylesheet" href="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '" ' + attbs + '>';
         } else {
-          ref = '<link rel="stylesheet" href="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '">';
+          ref += '<link rel="stylesheet" href="' + target + (/\/$/.test(target) ? '' : '/') + newfilename + '">';
         }
       }
 
@@ -259,14 +267,18 @@ module.exports = function (options) {
                         src = src.pipe(fn(name));
                     });
 
-                    if (type == 'combjs') {
-                        name = name.replace(/\d+$/g, '');
-                        name += (/\/$/.test(name) ? '' : '/') + (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(filepaths.join(',')) + '.js';
-                    }
+                    if (type == 'combjs' || type == 'combcss') {
+                        filepaths = filepaths.sort();
 
-                    if (type == 'combcss') {
                         name = name.replace(/\d+$/g, '');
-                        name += (/\/$/.test(name) ? '' : '/') + (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(filepaths.join(',')) + '.css';
+                        name += (/\/$/.test(name) ? '' : '/') + (opts.filenamePrefix ? opts.filenamePrefix : '') + getShortString(filepaths.join(','));
+
+                        if (type == 'combjs') {
+                            name += '.js';
+                        }
+                        else {
+                            name += '.css';
+                        }
                     }
 
                     // Add assets to the stream
